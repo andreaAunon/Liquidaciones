@@ -1,9 +1,8 @@
 package com.babel.liquidaciones.view;
 
-import com.babel.liquidaciones.services.ILoginService;
-import com.babel.liquidaciones.services.ISiniestrosService;
-import com.babel.liquidaciones.services.IUserService;
-import com.babel.liquidaciones.services.LoginService;
+import com.babel.liquidaciones.services.interfaces.ILoginService;
+import com.babel.liquidaciones.services.ISiniestroService;
+import com.babel.liquidaciones.services.interfaces.IUserService;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -14,10 +13,10 @@ public class Menu {
     private Scanner scanner;
     private boolean isInSession;
     private ILoginService loginService;
-    private ISiniestrosService siniestrosService;
+    private ISiniestroService siniestrosService;
     private IUserService userService;
 
-    public Menu(ILoginService loginService, ISiniestrosService siniestrosService, IUserService userService) {
+    public Menu(ILoginService loginService, ISiniestroService siniestrosService, IUserService userService) {
         this.loginService = loginService;
         this.userService = userService;
         this.siniestrosService = siniestrosService;

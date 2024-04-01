@@ -3,7 +3,7 @@ package com.babel.liquidaciones.services;
 import com.babel.liquidaciones.model.Dano;
 import com.babel.liquidaciones.model.Poliza;
 import com.babel.liquidaciones.model.Siniestro;
-import com.babel.liquidaciones.model.example.BaseData;
+import com.babel.liquidaciones.services.interfaces.IPolizaService;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -11,12 +11,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class SiniestrosService implements ISiniestrosService {
+public class SiniestroService implements ISiniestroService {
 
-    private BaseData data;
+    private IPolizaService polizaService;
 
-    public SiniestrosService(BaseData data) {
-        this.data = data;
+    public SiniestroService(IPolizaService polizaService) {
+        this.polizaService = polizaService;
     }
 
     @Override
@@ -58,12 +58,13 @@ public class SiniestrosService implements ISiniestrosService {
 
     private void registrarSiniestro(List<Dano> daños, String causaSiniestro, Date fechaSiniestro, Poliza polizaAsociada) {
         Siniestro siniestro = new Siniestro();
-        siniestro.setDaños(daños);
+        //siniestro.setDaños(daños);
         siniestro.setCausa(causaSiniestro);
         siniestro.setFechaDeOcurrencia(fechaSiniestro);
         siniestro.setPolizaAsociada(polizaAsociada);
 
-        this.data.altaSiniestro(siniestro);
+        //TODO arreglar por eliminacion de bd
+        //this.data.altaSiniestro(siniestro);
         System.out.println("Siniestro registrado");
     }
 
@@ -88,8 +89,8 @@ public class SiniestrosService implements ISiniestrosService {
             System.out.println("Valor: ");
             int valor = sc.nextInt();
             Dano daño = new Dano();
-            daño.setPoliza(this.obtenerPoliza(codigoPoliza));
-            daño.setValor(valor);
+            //daño.setPoliza(this.obtenerPoliza(codigoPoliza));
+            //daño.setValor(valor);
             daños.add(daño);
         }
         return daños;
@@ -97,6 +98,6 @@ public class SiniestrosService implements ISiniestrosService {
 
 
     private Poliza obtenerPoliza(String code) {
-        return this.data.findPolizaByCode(code);
+        return this.polizaService.findPolizaByCode(code);
     }
 }

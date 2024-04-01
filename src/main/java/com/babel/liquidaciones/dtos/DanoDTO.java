@@ -1,6 +1,6 @@
-package com.babel.liquidaciones.model;
+package com.babel.liquidaciones.dtos;
 
-import jakarta.persistence.Entity;
+import com.babel.liquidaciones.model.ProductWarranty;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -8,14 +8,10 @@ import lombok.Data;
 
 import java.util.Date;
 
-@Entity
 @Data
-public class Dano {
-    @Id
-    @GeneratedValue
+public class DanoDTO {
     private Long id;
     private String motivo;
     private Date antiguedad;
-    @ManyToOne
     private ProductWarranty warranty;
 }

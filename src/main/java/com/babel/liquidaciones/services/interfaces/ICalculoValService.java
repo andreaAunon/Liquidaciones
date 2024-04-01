@@ -1,4 +1,4 @@
-package com.babel.liquidaciones.services;
+package com.babel.liquidaciones.services.interfaces;
 
 import com.babel.liquidaciones.model.Dano;
 

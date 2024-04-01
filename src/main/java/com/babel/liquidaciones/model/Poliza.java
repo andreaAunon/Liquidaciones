@@ -1,12 +1,18 @@
 package com.babel.liquidaciones.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
+@Entity
 @Data
 public class Poliza {
-    private Cliente clienteAsociado;
-    private Product producto;
+    @Id
+    @GeneratedValue
+    private String code;
     private Integer importeCapitalesContratados;
-    private String codigo;
 
+    @OneToOne
+    private Cliente clienteAsociado;
+    @OneToOne
+    private Product producto;
 }

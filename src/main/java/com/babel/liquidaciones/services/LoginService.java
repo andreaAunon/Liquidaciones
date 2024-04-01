@@ -1,7 +1,7 @@
 package com.babel.liquidaciones.services;
 
 import com.babel.liquidaciones.model.Cliente;
-import com.babel.liquidaciones.model.example.BaseData;
+import com.babel.liquidaciones.services.interfaces.ILoginService;
 import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
@@ -9,12 +9,7 @@ import java.util.Scanner;
 @Service
 public class LoginService implements ILoginService {
 
-    private BaseData data;
     private Cliente clienteLogueado;
-
-    public LoginService(BaseData baseData) {
-        this.data = baseData;
-    }
 
     public boolean login() {
         Scanner sc = new Scanner(System.in);
@@ -23,7 +18,8 @@ public class LoginService implements ILoginService {
         System.out.println("Contraseña: ");
         String contraseña = sc.nextLine();
         if (isUserPasswordCorrect(usuario, contraseña)) {
-            this.clienteLogueado = this.data.getClienteByNombre(usuario, contraseña);
+            //TODO Arrglar porque se quita BD
+            //this.clienteLogueado = this.data.getClienteByNombre(usuario, contraseña);
             return true;
         }
         System.err.println("Usuario o contraseña incorrectas");
@@ -35,8 +31,11 @@ public class LoginService implements ILoginService {
         return this.clienteLogueado;
     }
 
+
+    //TODO Arrglar porque se quita BD
     private boolean isUserPasswordCorrect(String usuario, String contraseña) {
-        return this.data.getClienteByNombre(usuario, contraseña) != null;
+        //return this.data.getClienteByNombre(usuario, contraseña) != null;
+        return false;
     }
 
 

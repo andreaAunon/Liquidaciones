@@ -1,6 +1,6 @@
 package com.babel.liquidaciones.services;
 
-public interface ISiniestrosService {
+public interface ISiniestroService {
 
     public void generarSiniestro();
 

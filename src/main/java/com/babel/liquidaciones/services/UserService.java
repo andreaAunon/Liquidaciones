@@ -1,7 +1,9 @@
 package com.babel.liquidaciones.services;
 
 import com.babel.liquidaciones.model.Poliza;
-import com.babel.liquidaciones.model.example.BaseData;
+import com.babel.liquidaciones.services.interfaces.ILoginService;
+import com.babel.liquidaciones.services.interfaces.IPolizaService;
+import com.babel.liquidaciones.services.interfaces.IUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,20 +11,21 @@ import java.util.List;
 @Service
 public class UserService implements IUserService {
 
-    private BaseData data;
     private ILoginService loginService;
+    private IPolizaService polizaService;
 
-    public UserService(BaseData data, ILoginService loginService) {
-        this.data = data;
+    public UserService(ILoginService loginService, IPolizaService polizaService) {
         this.loginService = loginService;
+        this.polizaService = polizaService;
     }
 
     @Override
     public void verPolizas() {
         System.out.println("Polizas del usuario: ");
-        List<Poliza> polizaList = this.data.findPolizasByUser(this.loginService.getUsuarioLogueado());
+        List<Poliza> polizaList = this.polizaService.findPolizasByUser(this.loginService.getUsuarioLogueado());
+
         polizaList.forEach(poliza -> {
-            System.out.printf("Poliza - Código: %s,  Importe: %d, Producto: %s", poliza.getCodigo(), poliza.getImporteCapitalesContratados(), poliza.getProducto().getCode());
+            System.out.printf("Poliza - Código: %s,  Importe: %d, Producto: %s", poliza.getCode(), poliza.getImporteCapitalesContratados(), poliza.getProducto().getCode());
         });
     }
 }

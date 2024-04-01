@@ -1,22 +1,16 @@
-package com.babel.liquidaciones.model;
+package com.babel.liquidaciones.dtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.babel.liquidaciones.model.Poliza;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
-@Entity
 @Data
-public class Cliente {
-    @Id
+public class ClienteDTO {
     private String nif;
-
     private String nombre;
     private String password;
     private String direction;
     private String contacto;
-
-    @OneToOne
     private Poliza poliza;
 
 }
