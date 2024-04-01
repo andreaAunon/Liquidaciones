@@ -16,7 +16,7 @@ public class Siniestro {
     private Date fechaDeOcurrencia;
     private String causa;
     @ManyToOne
-    private List<Dano> listaDeDanos;
+    private List<Damage> listaDeDamages;
     @OneToOne
     private Poliza polizaAsociada;
 

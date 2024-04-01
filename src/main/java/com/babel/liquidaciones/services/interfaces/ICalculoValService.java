@@ -1,9 +1,9 @@
 package com.babel.liquidaciones.services.interfaces;
 
-import com.babel.liquidaciones.model.Dano;
+import com.babel.liquidaciones.model.Damage;
 
 public interface ICalculoValService {
-    public Double calcularPrimerRiesgo(Dano daño);
-    public Double calcularReposicion(Dano daño);
-    public Double calcularValorReal(Dano daño);
+    public Double calcularPrimerRiesgo(Damage daño);
+    public Double calcularReposicion(Damage daño);
+    public Double calcularValorReal(Damage daño);
 }

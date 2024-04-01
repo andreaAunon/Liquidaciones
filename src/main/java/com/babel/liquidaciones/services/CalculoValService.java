@@ -1,6 +1,6 @@
 package com.babel.liquidaciones.services;
 
-import com.babel.liquidaciones.model.Dano;
+import com.babel.liquidaciones.model.Damage;
 import com.babel.liquidaciones.model.Siniestro;
 import com.babel.liquidaciones.services.interfaces.ICalculoValService;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class CalculoValService implements ICalculoValService {
     }
 
     @Override
-    public Double calcularPrimerRiesgo(Dano daño) {
+    public Double calcularPrimerRiesgo(Damage daño) {
         Double capitalInsured = daño.getWarranty().getCapitalInsured();
 
         Double liquidacionASumar = Math.min(capitalInsured, this.siniestro.getPolizaAsociada().getImporteCapitalesContratados());
@@ -25,12 +25,12 @@ public class CalculoValService implements ICalculoValService {
     }
 
     @Override
-    public Double calcularReposicion(Dano daño) {
+    public Double calcularReposicion(Damage daño) {
         return daño.getWarranty().getCapitalInsured();
     }
 
     @Override
-    public Double calcularValorReal(Dano daño) {
+    public Double calcularValorReal(Damage daño) {
         double capitalInsured = daño.getWarranty().getCapitalInsured();
         double depreciacion = 100/7;
 

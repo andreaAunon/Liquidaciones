@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Dano {
+public class Damage {
     @Id
     @GeneratedValue
     private Long id;

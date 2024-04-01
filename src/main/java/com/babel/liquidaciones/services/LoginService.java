@@ -1,29 +1,29 @@
 package com.babel.liquidaciones.services;
 
 import com.babel.liquidaciones.model.Cliente;
+import com.babel.liquidaciones.repository.IClienteRepository;
 import com.babel.liquidaciones.services.interfaces.ILoginService;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
+import java.util.Optional;
 
 @Service
 public class LoginService implements ILoginService {
 
     private Cliente clienteLogueado;
+    private IClienteRepository clienteRepository;
 
-    public boolean login() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Usuario: ");
-        String usuario = sc.nextLine();
-        System.out.println("Contraseña: ");
-        String contraseña = sc.nextLine();
-        if (isUserPasswordCorrect(usuario, contraseña)) {
-            //TODO Arrglar porque se quita BD
-            //this.clienteLogueado = this.data.getClienteByNombre(usuario, contraseña);
-            return true;
+    public LoginService(IClienteRepository clienteRepository){
+        this.clienteRepository = clienteRepository;
+    }
+
+    @Override
+    public String login(String usuario, String password) {
+        if (isUserPasswordCorrect(usuario, password)) {
+            this.clienteLogueado = findByNombreAndPassword(usuario, password);
+            return "Usuario encontrado";
         }
-        System.err.println("Usuario o contraseña incorrectas");
-        return false;
+        return "Usuario o contraseña incorrectas";
     }
 
     @Override
@@ -31,12 +31,19 @@ public class LoginService implements ILoginService {
         return this.clienteLogueado;
     }
 
+    @Override
+    public Cliente findByNombreAndPassword(String nombre, String password) {
+        Optional<Cliente> cliente = this.clienteRepository.findByNombreAndPassword(nombre, password);
 
-    //TODO Arrglar porque se quita BD
-    private boolean isUserPasswordCorrect(String usuario, String contraseña) {
-        //return this.data.getClienteByNombre(usuario, contraseña) != null;
-        return false;
+        if(cliente.isPresent()){
+            return cliente.get();
+        }
+
+        return null;
     }
 
+    private boolean isUserPasswordCorrect(String usuario, String password) {
+        return this.clienteRepository.findByNombreAndPassword(usuario, password) != null;
+    }
 
 }

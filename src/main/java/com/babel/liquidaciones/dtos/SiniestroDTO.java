@@ -1,9 +1,7 @@
 package com.babel.liquidaciones.dtos;
 
-import com.babel.liquidaciones.model.Dano;
+import com.babel.liquidaciones.model.Damage;
 import com.babel.liquidaciones.model.Poliza;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,11 +12,11 @@ public class SiniestroDTO {
     private Long id;
     private Date fechaDeOcurrencia;
     private String causa;
-    private List<Dano> listaDeDanos;
+    private List<Damage> listaDeDamages;
     private Poliza polizaAsociada;
 
-    public Dano getDano(int index){
-        return listaDeDanos.get(index);
+    public Damage getDano(int index){
+        return listaDeDamages.get(index);
     }
 
 }
