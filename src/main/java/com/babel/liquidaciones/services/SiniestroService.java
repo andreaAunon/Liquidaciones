@@ -3,7 +3,9 @@ package com.babel.liquidaciones.services;
 import com.babel.liquidaciones.model.Dano;
 import com.babel.liquidaciones.model.Poliza;
 import com.babel.liquidaciones.model.Siniestro;
+import com.babel.liquidaciones.repository.ISiniestroRepository;
 import com.babel.liquidaciones.services.interfaces.IPolizaService;
+import com.babel.liquidaciones.services.interfaces.ISiniestroService;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -14,58 +16,47 @@ import java.util.*;
 public class SiniestroService implements ISiniestroService {
 
     private IPolizaService polizaService;
+    private ISiniestroRepository siniestroRepository;
 
-    public SiniestroService(IPolizaService polizaService) {
+    public SiniestroService(IPolizaService polizaService,
+                            ISiniestroRepository siniestroRepository) {
         this.polizaService = polizaService;
+        this.siniestroRepository = siniestroRepository;
     }
 
     @Override
-    public void generarSiniestro() {
-        Scanner sc = new Scanner(System.in);
+    public String generarSiniestro(String codigoPoliza, String fecha, String causaSiniestro) {
+        Poliza polizaAsociada = getpolizaByCode(codigoPoliza);
 
-        Poliza polizaAsociada = null;
-        Boolean polizaCorrecta = false;
-        while (!polizaCorrecta) {
-            System.out.println("Por favor, introduzca a continuación los datos del siniestro: ");
-            System.out.println("Código de Poliza: ");
-            String codigoPoliza = sc.nextLine();
-            polizaAsociada = obtenerPoliza(codigoPoliza);
-
-            if (polizaAsociada == null) {
-                System.err.println("Esa poliza no existe.");
-            } else {
-                polizaCorrecta = true;
-            }
-
+        if (polizaAsociada == null) {
+            return "Poliza inexistente";
         }
 
-        System.out.println("Fecha de ocurrencia (dd/MM/YYYY): ");
-        String fecha = sc.nextLine();
         Date fechaSiniestro = null;
         try {
             fechaSiniestro = procesarFecha(fecha);
         } catch (ParseException e) {
             throw new RuntimeException("Formato de fecha incorrecto");
         }
+        List<Dano> danos = procesarDanos(codigoPoliza);
 
-        System.out.println("Cause de origen del siniestro: ");
-        String causaSiniestro = sc.nextLine();
-
-        List<Dano> daños = procesarDaños();
-
-        registrarSiniestro(daños, causaSiniestro, fechaSiniestro, polizaAsociada);
+        return registrarSiniestro(danos, causaSiniestro, fechaSiniestro, polizaAsociada);
     }
 
-    private void registrarSiniestro(List<Dano> daños, String causaSiniestro, Date fechaSiniestro, Poliza polizaAsociada) {
+    @Override
+    public void altaSiniestro(Siniestro siniestro) {
+        this.siniestroRepository.save(siniestro);
+    }
+
+    private String registrarSiniestro(List<Dano> danos, String causaSiniestro, Date fechaSiniestro, Poliza polizaAsociada) {
         Siniestro siniestro = new Siniestro();
-        //siniestro.setDaños(daños);
+        siniestro.setListaDeDanos(danos);
         siniestro.setCausa(causaSiniestro);
         siniestro.setFechaDeOcurrencia(fechaSiniestro);
         siniestro.setPolizaAsociada(polizaAsociada);
 
-        //TODO arreglar por eliminacion de bd
-        //this.data.altaSiniestro(siniestro);
-        System.out.println("Siniestro registrado");
+        altaSiniestro(siniestro);
+        return "Siniestro registrado";
     }
 
     private Date procesarFecha(String fecha) throws ParseException {
@@ -73,31 +64,20 @@ public class SiniestroService implements ISiniestroService {
         return formatter.parse(fecha);
     }
 
-    private List<Dano> procesarDaños() {
-        System.out.println("Listado de daños");
-        List<Dano> daños = new ArrayList<>();
-        boolean isDone = false;
-        while (!isDone) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Codigo de poliza (o 'exit'): ");
-            String codigoPoliza = sc.nextLine();
+    private List<Dano> procesarDanos(String codigoPoliza) {
+        List<Dano> danos = new ArrayList<>();
 
-            if (codigoPoliza.equalsIgnoreCase("exit")) {
-                return daños;
-            }
-
-            System.out.println("Valor: ");
-            int valor = sc.nextInt();
-            Dano daño = new Dano();
-            //daño.setPoliza(this.obtenerPoliza(codigoPoliza));
-            //daño.setValor(valor);
-            daños.add(daño);
+        if (codigoPoliza.equalsIgnoreCase("exit")) {
+            return danos;
         }
-        return daños;
+
+        Dano dano = new Dano();
+        danos.add(dano);
+        return danos;
     }
 
-
-    private Poliza obtenerPoliza(String code) {
+    private Poliza getpolizaByCode(String code){
         return this.polizaService.findPolizaByCode(code);
     }
+
 }

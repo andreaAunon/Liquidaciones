@@ -2,7 +2,6 @@ package com.babel.liquidaciones.services;
 
 import com.babel.liquidaciones.model.Cliente;
 import com.babel.liquidaciones.model.Poliza;
-import com.babel.liquidaciones.model.Siniestro;
 import com.babel.liquidaciones.repository.IPolizaRepository;
 import com.babel.liquidaciones.services.interfaces.IPolizaService;
 
